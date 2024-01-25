@@ -1,4 +1,6 @@
-﻿namespace MultiTenant.Middleware.Api
+﻿using MultiTenant.Middleware.Api.Extensions;
+
+namespace MultiTenant.Middleware.Api
 {
     public class Startup
     {
@@ -12,11 +14,19 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMultTenant();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMultiTenant();
+
             app.UseRouting();
+
+            if (env.IsDevelopment())
+            {
+
+            }
 
             app.UseEndpoints(endpoints =>
             {
