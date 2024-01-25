@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTenant.Middleware.Api", "MultiTenant.Middleware.Api\MultiTenant.Middleware.Api.csproj", "{95C6D61D-96AE-4347-AE08-2343FF4BE94F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95C6D61D-96AE-4347-AE08-2343FF4BE94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C6D61D-96AE-4347-AE08-2343FF4BE94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C6D61D-96AE-4347-AE08-2343FF4BE94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C6D61D-96AE-4347-AE08-2343FF4BE94F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {542E46EE-311B-4E56-B6CB-8ADDEC636509}
+	EndGlobalSection
+EndGlobal
