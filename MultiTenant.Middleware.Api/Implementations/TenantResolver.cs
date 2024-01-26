@@ -1,15 +1,14 @@
 ﻿using MultiTenant.Middleware.Api.Abstractions;
-using MultiTenant.Middleware.Api.Implementations;
 using System.Collections.Concurrent;
 
-namespace MultiTenant.Middleware.Api.Services
+namespace MultiTenant.Middleware.Api.Implementations
 {
     public class TenantResolver : ITenantResolver
     {
         private const string DefaultSectionName = "MultiTenant:Stores:Configuration";
+        private ConcurrentDictionary<string, ITenantInfo>? tenantMap;
         private readonly IConfiguration _configuration;
         private readonly IConfigurationSection _section;
-        private ConcurrentDictionary<string, ITenantInfo>? tenantMap;
 
         public TenantResolver(IConfiguration configuration)
         {
@@ -28,8 +27,6 @@ namespace MultiTenant.Middleware.Api.Services
         {
             if (!context.Request.Headers.TryGetValue("X-Tenant-Id", out var tenant))
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Tenant header is missing");
                 return new TenantContext();
             }
 
@@ -37,8 +34,6 @@ namespace MultiTenant.Middleware.Api.Services
 
             if (tenantInfo is null)
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Tenant header is invalid");
                 return new TenantContext();
             }
 
@@ -46,6 +41,11 @@ namespace MultiTenant.Middleware.Api.Services
             {
                 Tenant = tenantInfo
             };
+        }
+
+        public Task<IEnumerable<ITenantInfo>> GetTenantsAsync()
+        {
+            return Task.FromResult(tenantMap?.Values.AsEnumerable() ?? Enumerable.Empty<ITenantInfo>());
         }
 
         private void UpdateTenantMap()
@@ -57,8 +57,6 @@ namespace MultiTenant.Middleware.Api.Services
             {
                 var newTenant = _section.GetSection("Defaults").Get<ITenantInfo>(options => options.BindNonPublicProperties = true) ?? new TenantInfo();
                 tenantSection.Bind(newTenant, options => options.BindNonPublicProperties = true);
-
-                // Throws an ArgumentNullException if the identifier is null.
                 newMap.TryAdd(newTenant.Identifier!, newTenant);
             }
 
@@ -74,5 +72,6 @@ namespace MultiTenant.Middleware.Api.Services
 
             return await Task.FromResult(tenantMap?.Where(kv => kv.Value.Id == id).SingleOrDefault().Value);
         }
+
     }
 }
